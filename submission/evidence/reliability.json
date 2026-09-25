@@ -1,0 +1,165 @@
+{
+  "passed": true,
+  "ros_domain": "72",
+  "checks": [
+    {
+      "check": "repeat_sequence",
+      "passed": true,
+      "mode": "position",
+      "cycle": 1,
+      "command_id": "e17fd5d217e4"
+    },
+    {
+      "check": "repeat_sequence",
+      "passed": true,
+      "mode": "position",
+      "cycle": 2,
+      "command_id": "d99cac019e33"
+    },
+    {
+      "check": "repeat_sequence",
+      "passed": true,
+      "mode": "position",
+      "cycle": 3,
+      "command_id": "cfbbf77f3944"
+    },
+    {
+      "check": "cancel_hold_reset_recover",
+      "passed": true,
+      "mode": "position",
+      "phase": "APPROACH_PICK",
+      "holding": false
+    },
+    {
+      "check": "cancel_hold_reset_recover",
+      "passed": true,
+      "mode": "position",
+      "phase": "PICKING",
+      "holding": false
+    },
+    {
+      "check": "cancel_hold_reset_recover",
+      "passed": true,
+      "mode": "position",
+      "phase": "LIFTING",
+      "holding": true
+    },
+    {
+      "check": "cancel_hold_reset_recover",
+      "passed": true,
+      "mode": "position",
+      "phase": "TRANSFERRING",
+      "holding": true
+    },
+    {
+      "check": "cancel_hold_reset_recover",
+      "passed": true,
+      "mode": "position",
+      "phase": "PLACING",
+      "holding": true
+    },
+    {
+      "check": "cancel_hold_reset_recover",
+      "passed": true,
+      "mode": "position",
+      "phase": "RETREATING",
+      "holding": false
+    },
+    {
+      "check": "invalid_duration_then_recovery",
+      "passed": true,
+      "mode": "position"
+    },
+    {
+      "check": "repeat_sequence",
+      "passed": true,
+      "mode": "velocity_pid",
+      "cycle": 1,
+      "command_id": "2fdad7564c72"
+    },
+    {
+      "check": "repeat_sequence",
+      "passed": true,
+      "mode": "velocity_pid",
+      "cycle": 2,
+      "command_id": "c160d2da6c17"
+    },
+    {
+      "check": "repeat_sequence",
+      "passed": true,
+      "mode": "velocity_pid",
+      "cycle": 3,
+      "command_id": "30040290bd3b"
+    },
+    {
+      "check": "cancel_hold_reset_recover",
+      "passed": true,
+      "mode": "velocity_pid",
+      "phase": "APPROACH_PICK",
+      "holding": false
+    },
+    {
+      "check": "cancel_hold_reset_recover",
+      "passed": true,
+      "mode": "velocity_pid",
+      "phase": "PICKING",
+      "holding": false
+    },
+    {
+      "check": "cancel_hold_reset_recover",
+      "passed": true,
+      "mode": "velocity_pid",
+      "phase": "LIFTING",
+      "holding": true
+    },
+    {
+      "check": "cancel_hold_reset_recover",
+      "passed": true,
+      "mode": "velocity_pid",
+      "phase": "TRANSFERRING",
+      "holding": true
+    },
+    {
+      "check": "cancel_hold_reset_recover",
+      "passed": true,
+      "mode": "velocity_pid",
+      "phase": "PLACING",
+      "holding": true
+    },
+    {
+      "check": "cancel_hold_reset_recover",
+      "passed": true,
+      "mode": "velocity_pid",
+      "phase": "RETREATING",
+      "holding": false
+    },
+    {
+      "check": "invalid_duration_then_recovery",
+      "passed": true,
+      "mode": "velocity_pid"
+    },
+    {
+      "check": "GUI_process_crash_does_not_abort_controller",
+      "passed": true
+    },
+    {
+      "check": "GUI_restart_receives_existing_state",
+      "passed": true
+    },
+    {
+      "check": "controller_crash_disables_GUI_commands",
+      "passed": true
+    },
+    {
+      "check": "controller_restart_is_idle_no_command_replay",
+      "passed": true
+    },
+    {
+      "check": "logger_process_crash_does_not_abort_controller",
+      "passed": true
+    }
+  ],
+  "python": "/home/baymax/kineshia_ros2_arm_task/.venv/bin/python",
+  "elapsed_seconds": 235.1442501800011,
+  "joint_samples_checked": 11452
+}

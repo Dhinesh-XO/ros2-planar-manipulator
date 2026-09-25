@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "audited_runtime_commit": "d42119d",
+  "recordings_commit": "b0bb113",
+  "supplied_library_sha256": "1e1c5f4bb5718839da924d192458fb2a679cc25cbded89cccf04381ad16f3dde",
+  "written_answers": "Review drafts; candidate must review in their own words.",
+  "validation_scope": "Simulation on Ubuntu 22.04 / ROS 2 Humble; not hardware or fresh-OS validation.",
+  "source_artifacts": {
+    "design-note.pdf": "artifacts/submission-notes/DESIGN_NOTE.pdf",
+    "simulation-to-hardware.pdf": "artifacts/submission-notes/HARDWARE_TRANSITION.pdf",
+    "media/pick-and-place.mp4": "artifacts/enhanced-release-demo.mp4",
+    "media/gazebo-pick-and-place.mp4": "artifacts/gazebo-final-demo.mp4",
+    "media/workcell.png": "artifacts/enhanced-release-preview.png",
+    "evidence/software-acceptance.json": "artifacts/submission-audit/clean-package/validation.json",
+    "evidence/telemetry-position.csv": "artifacts/submission-audit/clean-package/telemetry_position.csv",
+    "evidence/telemetry-velocity-pid.csv": "artifacts/submission-audit/clean-package/telemetry_velocity_pid.csv",
+    "evidence/clean-build-and-test.log": "artifacts/submission-audit/clean-package/build-and-test.log",
+    "evidence/final-zip-build-and-test.log": "artifacts/submission-audit/final-bundle-check.log",
+    "evidence/reliability.json": "artifacts/submission-audit/reliability-final/report.json",
+    "evidence/gazebo.json": "artifacts/submission-audit/physics/gazebo_validation.json"
+  },
+  "sha256": {
+    "design-note.pdf": "0e88e4d6c4bbbf543777d07e1a6bab5722818e449d70b8807ddf2a829610ac14",
+    "simulation-to-hardware.pdf": "f93e33e1eabc35bc8ff5b13a8ca94c1e1cac9674a875ce8245c396bb8853634e",
+    "media/pick-and-place.mp4": "5ebcd5e465276c2c9331647049c56110cf2e07fb471273fdd5630bcec4f45c65",
+    "media/gazebo-pick-and-place.mp4": "9622f3c4f33a84ac746bf06ca5f9a6b9c52c33f2c07d9d7f01d26989b9e7401b",
+    "media/workcell.png": "8637942b22d39716ca8027a8be5ca8d93d84b53ccee1af0a4c09a64e02088792",
+    "evidence/software-acceptance.json": "c958d278eee5b972f127ac34dfc6bac1007e90080e7424f263dd3e152f7da07d",
+    "evidence/telemetry-position.csv": "34a47bf6201f5047853bfc9de48e2bc3f0f7f2ee0905e4d143701217667d152b",
+    "evidence/telemetry-velocity-pid.csv": "dcd104ecd2160ed364d50a9c904cb242a5eb1d5c42f0dd409e06aefd4a8ec89c",
+    "evidence/clean-build-and-test.log": "4ab0a97ff7742ebeacf499c99c1671e06a1d0dc1c125ee6496573bc5587aed7a",
+    "evidence/final-zip-build-and-test.log": "df9b905d3c3e727205a358ed4e9b186e066faf9456b74e8f7335ab9d1c81ecbd",
+    "evidence/reliability.json": "b021d4ba7b76f570577e30971b40229f9512653184e72e9c9d7a08a5e8b4928b",
+    "evidence/gazebo.json": "e86232389e18aa0fa492f273b14a0477aa09f17cf79aa1d5c6f6af980afce3a6"
+  }
+}

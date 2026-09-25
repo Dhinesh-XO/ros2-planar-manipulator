@@ -1,0 +1,36 @@
+{
+  "passed": true,
+  "physical_joint_samples": 2616,
+  "physical_object_samples": 1309,
+  "sequence_phases": [
+    "APPROACH_PICK",
+    "MOVING_TO_PICK",
+    "PICKING",
+    "LIFTING",
+    "TRANSFERRING",
+    "APPROACH_PLACE",
+    "MOVING_TO_PLACE",
+    "PLACING",
+    "RETREATING",
+    "SUCCEEDED"
+  ],
+  "attachment_events": [
+    "attached",
+    "detached"
+  ],
+  "final_object_xy": [
+    -2.996148969508575,
+    2.9499998540678787
+  ],
+  "projection": [
+    5.974442695117376,
+    2.5604754407645895
+  ],
+  "clock_stall_detected": true,
+  "clock_resume_does_not_replay_command": true,
+  "limitations": [
+    "constraint-based grasp, not frictional grasp",
+    "simplified fixture collisions",
+    "no hardware safety validation"
+  ]
+}

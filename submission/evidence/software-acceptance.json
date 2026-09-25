@@ -1,0 +1,81 @@
+{
+  "library_sha256": "1e1c5f4bb5718839da924d192458fb2a679cc25cbded89cccf04381ad16f3dde",
+  "modes": [
+    {
+      "mode": "position",
+      "passed": true,
+      "samples": 884,
+      "sequence_samples": 673,
+      "mean_rate_hz": 49.88565420662966,
+      "max_message_interval_ms": 85.48092842102051,
+      "sequence_phases": [
+        "APPROACH_PICK",
+        "MOVING_TO_PICK",
+        "PICKING",
+        "LIFTING",
+        "TRANSFERRING",
+        "APPROACH_PLACE",
+        "MOVING_TO_PLACE",
+        "PLACING",
+        "RETREATING",
+        "SUCCEEDED"
+      ],
+      "projection": [
+        5.974442695117376,
+        2.5604754407645895
+      ],
+      "checks": [
+        "joint limits",
+        "independent FK/ground",
+        "invalid inputs",
+        "unsafe IK",
+        "sequence order",
+        "endpoint accuracy",
+        "busy rejection",
+        "mode change rejection",
+        "projection",
+        "cancellation holds pose",
+        "fixed-rate telemetry",
+        "GUI independence"
+      ]
+    },
+    {
+      "mode": "velocity_pid",
+      "passed": true,
+      "samples": 1005,
+      "sequence_samples": 774,
+      "mean_rate_hz": 49.999437395476356,
+      "max_message_interval_ms": 49.97897148132324,
+      "sequence_phases": [
+        "APPROACH_PICK",
+        "MOVING_TO_PICK",
+        "PICKING",
+        "LIFTING",
+        "TRANSFERRING",
+        "APPROACH_PLACE",
+        "MOVING_TO_PLACE",
+        "PLACING",
+        "RETREATING",
+        "SUCCEEDED"
+      ],
+      "projection": [
+        5.974442695117376,
+        2.5604754407645895
+      ],
+      "checks": [
+        "joint limits",
+        "independent FK/ground",
+        "invalid inputs",
+        "unsafe IK",
+        "sequence order",
+        "endpoint accuracy",
+        "busy rejection",
+        "mode change rejection",
+        "projection",
+        "cancellation holds pose",
+        "fixed-rate telemetry",
+        "GUI independence"
+      ]
+    }
+  ]
+}

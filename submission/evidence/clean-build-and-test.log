@@ -1,0 +1,95 @@
+Collecting pyqtgraph==0.13.7
+  Downloading pyqtgraph-0.13.7-py3-none-any.whl (1.9 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.9/1.9 MB 24.9 MB/s eta 0:00:00
+Collecting PyOpenGL==3.1.7
+  Downloading PyOpenGL-3.1.7-py3-none-any.whl (2.4 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.4/2.4 MB 126.1 MB/s eta 0:00:00
+Installing collected packages: PyOpenGL, pyqtgraph
+Successfully installed PyOpenGL-3.1.7 pyqtgraph-0.13.7
+Starting >>> planar_arm_interfaces
+Finished <<< planar_arm_interfaces [4.55s]
+Starting >>> planar_arm_control
+Finished <<< planar_arm_control [0.73s]
+
+Summary: 2 packages finished [5.48s]
+......................                                                   [100%]
+22 passed in 0.93s
+/tmp/kineshia-final-audit.F8pz3A/.venv/bin/python
+/tmp/kineshia-final-audit.F8pz3A/build/planar_arm_control/planar_arm_control/__init__.py
+/tmp/kineshia-final-audit.F8pz3A/install/planar_arm_interfaces/lib/python3.10/site-packages/planar_arm_interfaces/__init__.py
+{
+  "mode": "position",
+  "passed": true,
+  "samples": 884,
+  "sequence_samples": 673,
+  "mean_rate_hz": 49.88565420662966,
+  "max_message_interval_ms": 85.48092842102051,
+  "sequence_phases": [
+    "APPROACH_PICK",
+    "MOVING_TO_PICK",
+    "PICKING",
+    "LIFTING",
+    "TRANSFERRING",
+    "APPROACH_PLACE",
+    "MOVING_TO_PLACE",
+    "PLACING",
+    "RETREATING",
+    "SUCCEEDED"
+  ],
+  "projection": [
+    5.974442695117376,
+    2.5604754407645895
+  ],
+  "checks": [
+    "joint limits",
+    "independent FK/ground",
+    "invalid inputs",
+    "unsafe IK",
+    "sequence order",
+    "endpoint accuracy",
+    "busy rejection",
+    "mode change rejection",
+    "projection",
+    "cancellation holds pose",
+    "fixed-rate telemetry",
+    "GUI independence"
+  ]
+}
+{
+  "mode": "velocity_pid",
+  "passed": true,
+  "samples": 1005,
+  "sequence_samples": 774,
+  "mean_rate_hz": 49.999437395476356,
+  "max_message_interval_ms": 49.97897148132324,
+  "sequence_phases": [
+    "APPROACH_PICK",
+    "MOVING_TO_PICK",
+    "PICKING",
+    "LIFTING",
+    "TRANSFERRING",
+    "APPROACH_PLACE",
+    "MOVING_TO_PLACE",
+    "PLACING",
+    "RETREATING",
+    "SUCCEEDED"
+  ],
+  "projection": [
+    5.974442695117376,
+    2.5604754407645895
+  ],
+  "checks": [
+    "joint limits",
+    "independent FK/ground",
+    "invalid inputs",
+    "unsafe IK",
+    "sequence order",
+    "endpoint accuracy",
+    "busy rejection",
+    "mode change rejection",
+    "projection",
+    "cancellation holds pose",
+    "fixed-rate telemetry",
+    "GUI independence"
+  ]
+}

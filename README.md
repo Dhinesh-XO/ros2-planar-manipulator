@@ -6,6 +6,16 @@ position playback and an illustrative velocity/PID tracking mode. The enhanced
 version adds a solid-link 3D workcell, a Gazebo Harmonic backend, approach/lift/
 retreat phases, and a separate read-only telemetry recorder.
 
+## Reviewer start here
+
+[Assessment deliverables](submission/README.md) includes the one-page PDF notes,
+the primary 75-second demonstration, the optional Gazebo recording and selected
+passing test evidence. These files are tracked in Git and available after cloning.
+The written answers are review drafts pending the candidate's own-words review.
+See [source provenance and evaluation-use notice](NOTICE.md) before publication.
+
+![PyQt workcell during the transfer phase](submission/media/workcell.png)
+
 The supplied `planar_arm.py` is preserved byte-for-byte. Read
 [known limitations and validation](docs/VALIDATION.md) before assuming its IK
 outputs are safe to execute.
@@ -190,12 +200,15 @@ To regenerate printable review drafts after editing (optional documentation tool
 /usr/bin/python3 scripts/render_submission_notes.py
 ```
 
-The PDFs go to `artifacts/submission-notes/`. Review drafts are not a substitute
-for your own explanation; this step does not send a submission.
+The PDFs go to `artifacts/submission-notes/`. To update their tracked copies and
+the selected evidence, run `python scripts/prepare_submission.py`, review the
+diff and commit it. A fresh clone can verify the tracked evidence with
+`python scripts/prepare_submission.py --check` without needing local artifacts.
+Review drafts are not a substitute for your own explanation.
 
 Submit a Git repository link, or a ZIP **including .git history**, these written
-deliverables, and a 1–3 minute recording. Generated artifacts are Git-ignored;
-attach `artifacts/demo.mp4` separately or include it in a submission archive.
-For the enhanced version use `artifacts/enhanced-release-demo.mp4`; the additional
-physical-backend recording is `artifacts/gazebo-final-demo.mp4`.
-Nothing has been emailed or published by the project scripts.
+deliverables, and a 1–3 minute recording. Temporary artifacts remain Git-ignored;
+the curated [submission folder](submission/README.md) contains the required
+tracked copies. Preserve the existing Git history when pushing. For a private
+repository, ensure the evaluator has access before sending its URL.
+Project scripts do not send submission emails or publish repositories.
