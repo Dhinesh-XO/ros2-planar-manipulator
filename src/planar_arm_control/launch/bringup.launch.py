@@ -1,28 +1,35 @@
-"""
-bringup.launch.py  —  STARTER STUB.
-
-Launch the controller node and the GUI node together. Fill in the nodes once
-you have implemented them, and expose any parameters you add (publish rate,
-control mode, trajectory duration, etc.) here.
-"""
+"""Start the controller and optional GUI with explicit runtime configuration."""
 
 from launch import LaunchDescription
+from launch.actions import DeclareLaunchArgument
+from launch.conditions import IfCondition
+from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
+from launch_ros.parameter_descriptions import ParameterValue
 
 
 def generate_launch_description():
     return LaunchDescription([
+        DeclareLaunchArgument('gui', default_value='true'),
+        DeclareLaunchArgument('control_mode', default_value='position'),
+        DeclareLaunchArgument('publish_rate_hz', default_value='50.0'),
+        DeclareLaunchArgument('trajectory_duration', default_value='4.0'),
         Node(
             package="planar_arm_control",
             executable="controller_node",
             name="controller_node",
             output="screen",
-            # parameters=[{"publish_rate_hz": 50.0, "control_mode": "position"}],
+            parameters=[{
+                'control_mode': LaunchConfiguration('control_mode'),
+                'publish_rate_hz': ParameterValue(LaunchConfiguration('publish_rate_hz'), value_type=float),
+                'trajectory_duration': ParameterValue(LaunchConfiguration('trajectory_duration'), value_type=float),
+            }],
         ),
         Node(
             package="planar_arm_control",
             executable="gui_node",
             name="gui_node",
             output="screen",
+            condition=IfCondition(LaunchConfiguration('gui')),
         ),
     ])
