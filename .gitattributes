@@ -2,3 +2,5 @@
 *.mp4 binary
 *.pdf binary
 *.png binary
+# Preserve raw evidence bytes so manifest hashes survive a fresh clone.
+/submission/evidence/*.csv -text
