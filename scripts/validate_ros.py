@@ -5,6 +5,7 @@ Never imports the controller, planner or supplied kinematics. An attractive GUI
 cannot make this test pass: it observes actual messages and service responses.
 """
 
+import argparse
 import csv
 import hashlib
 import json
@@ -99,8 +100,8 @@ class Witness(Node):
         assert self.latest.state == 'SUCCEEDED', self.latest.detail
 
 
-def validate_mode(mode):
-    log_path = ROOT / 'artifacts' / f'controller_{mode}.log'
+def validate_mode(mode, artifacts):
+    log_path = artifacts / f'controller_{mode}.log'
     with log_path.open('w') as log:
         process = subprocess.Popen([sys.executable, '-m', 'planar_arm_control.controller_node',
                                     '--ros-args', '-p', f'control_mode:={mode}'], stdout=log, stderr=log)
@@ -162,7 +163,7 @@ def validate_mode(mode):
             assert 40 <= rate <= 60, f'Unexpected telemetry rate: {rate}'
             assert float(np.max(intervals)) < 0.25, 'Telemetry stalled'
             assert witness.call(witness.reset, Trigger.Request()).success
-            with (ROOT / 'artifacts' / f'telemetry_{mode}.csv').open('w') as stream:
+            with (artifacts / f'telemetry_{mode}.csv').open('w') as stream:
                 writer = csv.writer(stream)
                 writer.writerow(['timestamp', 'q1', 'q2', 'q3', 'dq1', 'dq2', 'dq3', 'x', 'y', 'min_y'])
                 writer.writerows(witness.samples)
@@ -185,7 +186,10 @@ def validate_mode(mode):
 
 
 def main():
-    (ROOT / 'artifacts').mkdir(exist_ok=True)
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--output', type=Path, default=ROOT / 'artifacts')
+    artifacts = parser.parse_args().output.resolve()
+    artifacts.mkdir(parents=True, exist_ok=True)
     library = ROOT / 'src/planar_arm_control/planar_arm_control/planar_arm.py'
     digest = hashlib.sha256(library.read_bytes()).hexdigest()
     assert digest == EXPECTED_LIBRARY_SHA256, 'Supplied library has changed'
@@ -193,10 +197,10 @@ def main():
     try:
         report = {'library_sha256': digest, 'modes': []}
         for mode in ('position', 'velocity_pid'):
-            result = validate_mode(mode)
+            result = validate_mode(mode, artifacts)
             report['modes'].append(result)
             print(json.dumps(result, indent=2), flush=True)
-        (ROOT / 'artifacts/validation.json').write_text(json.dumps(report, indent=2) + '\n')
+        (artifacts / 'validation.json').write_text(json.dumps(report, indent=2) + '\n')
     finally:
         rclpy.shutdown()
 

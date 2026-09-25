@@ -207,7 +207,16 @@ class ControllerNode(Node):
             self.phase_count = len(route) + 2
             self.route = deque(route)
             self.publish_path(route)
-            self.next_leg()
+            try:
+                self.next_leg()
+            except (PlanningError, ValueError, ArithmeticError) as error:
+                # Rechecking against measured state can fail after preflight.
+                # Return a failed admission instead of escaping the ROS callback
+                # with the command reservation still marked busy.
+                self.finish('FAILED', str(error))
+                response.message = str(error)
+                self.get_logger().error(str(error))
+                return response
             response.accepted, response.command_id = True, token
             response.message = 'Approach, grasp, lift, transfer, place and retreat preflighted.'
         return response
@@ -248,6 +257,10 @@ class ControllerNode(Node):
             self.backend.hold_reference(self.q_ref)
         else:
             self.backend.stop()
+            # Telemetry must describe the requested hold, including when the
+            # feedback watchdog fails before normal publication can resume.
+            self.q_ref = self.backend.read_state()[0]
+            self.route.clear()
         self.busy, self.state, self.detail = False, state, detail
         self.trajectory = None
         self.dq_ref = np.zeros(3)

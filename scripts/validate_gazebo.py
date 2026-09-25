@@ -6,6 +6,7 @@ poses and attachment acknowledgements in addition to the public controller API.
 Does not import the planner, backend, GUI or provided kinematics.
 """
 
+import argparse
 import json
 import os
 from pathlib import Path
@@ -52,16 +53,19 @@ class PhysicsWitness(Witness):
 
 
 def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--output', type=Path, default=ROOT / 'artifacts')
+    artifacts = parser.parse_args().output.resolve()
     assert os.environ.get('ROS_DOMAIN_ID') not in (None, '0', '67', '68'), 'Use an isolated test domain, e.g. 71'
     partition = 'kineshia_'+os.environ['ROS_DOMAIN_ID']
     rclpy.init()
     witness = PhysicsWitness()
-    artifacts = ROOT / 'artifacts'
-    artifacts.mkdir(exist_ok=True)
+    artifacts.mkdir(parents=True, exist_ok=True)
     report = {'passed': False}
     with (artifacts / 'gazebo_validation.log').open('w') as log:
         process = subprocess.Popen(['ros2', 'launch', 'planar_arm_control', 'gazebo.launch.py',
-                                    'gui:=false', 'record_telemetry:=true'],
+                                    'gui:=false', 'record_telemetry:=true',
+                                    f'telemetry_directory:={artifacts / "telemetry"}'],
                                    stdout=log, stderr=log, start_new_session=True)
         try:
             witness.until(lambda: witness.latest and witness.latest.state == 'IDLE', timeout=25)
@@ -107,10 +111,21 @@ def main():
                            check=True, capture_output=True, timeout=5)
             witness.until(lambda: witness.latest.state == 'FAILED', timeout=4)
             assert 'stale' in witness.latest.detail
+            # Resume the clock: a failed command must not silently restart.
+            subprocess.run(['gz','service','-s','/world/workcell/control',
+                            '--reqtype','gz.msgs.WorldControl','--reptype','gz.msgs.Boolean',
+                            '--timeout','2000','--req','pause: false'], env=env,
+                           check=True, capture_output=True, timeout=5)
+            count = len(witness.samples)
+            witness.until(lambda: len(witness.samples) >= count+15, timeout=5)
+            assert witness.latest.state == 'FAILED' and not witness.latest.busy
+            assert np.max(np.abs(np.array(witness.references[-1])-
+                                 np.array(witness.samples[-1][1:4]))) < .04
             report = {'passed': True, 'physical_joint_samples': len(physical),
                       'physical_object_samples': len(objects), 'sequence_phases': required,
                       'attachment_events': attachment_events, 'final_object_xy': final_object,
                       'projection': expected.tolist(), 'clock_stall_detected': True,
+                      'clock_resume_does_not_replay_command': True,
                       'limitations': ['constraint-based grasp, not frictional grasp',
                                       'simplified fixture collisions', 'no hardware safety validation']}
             print(json.dumps(report, indent=2), flush=True)
