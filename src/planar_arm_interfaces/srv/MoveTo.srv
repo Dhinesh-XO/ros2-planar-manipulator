@@ -1,0 +1,10 @@
+# Coordinates use the same arbitrary length unit as the supplied link lengths.
+# duration == 0 uses the configured default; timing may be extended for limits.
+geometry_msgs/Point target
+float64 duration
+---
+bool accepted
+string command_id
+string message
+bool projected
+geometry_msgs/Point resolved_target

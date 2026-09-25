@@ -1,0 +1,16 @@
+std_msgs/Header header
+string command_id
+string state
+string detail
+string control_mode
+bool busy
+bool holding_object
+bool object_visible
+bool projected
+geometry_msgs/Point requested_target
+geometry_msgs/Point resolved_target
+geometry_msgs/Point end_effector
+geometry_msgs/Point object_position
+float64[3] tracking_error
+float64 timer_jitter_mean_ms
+float64 timer_jitter_max_ms

@@ -1,0 +1,7 @@
+geometry_msgs/Point pick
+geometry_msgs/Point place
+float64 duration
+---
+bool accepted
+string command_id
+string message
