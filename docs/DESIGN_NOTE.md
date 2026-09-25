@@ -37,7 +37,7 @@ Qt widgets live on the main thread, with ROS callbacks communicating through
 queued signals and asynchronous service responses. Plot history is bounded;
 command/feedback timestamps are matched before calculating error. Stale telemetry
 disables new GUI commands. Measured timer jitter is reported; no hard-real-time
-guarantee is claimed. A short place replan still runs during a timer transition.
+guarantee is claimed. Motion-leg replanning still runs under the controller lock.
 
 An orbitable solid-link workcell is a 3D rendering of the same planar FK, not a
 different robot. A separate recorder reuses an attributed Apache-2.0 CSV/JSONL
@@ -52,7 +52,7 @@ include unconstrained fallback IK, origin-target early return and an unused beta
 correction in the analytical branch; these are documented rather than edited.
 
 With more time, priorities are a standard pick/place action, worker-based planning
-for every transition, a richer path search, restart/fault tests and a hardware
+for every transition, a richer path search, broader fault tests and a hardware
 backend with measured feedback and device-side watchdogs. Gazebo uses a simplified
 attachment grasp and fixture collisions, with a documented 5 mm release gap;
 it is not frictional-grasp or hardware validation. Current control is not implemented.

@@ -27,6 +27,12 @@
 
 ## Time estimate and focused next steps
 
+The final engineering pass is documented in [submission audit](SUBMISSION_AUDIT.md):
+fault-path hardening, additional regression tests, repeat/cancel/restart checks,
+clean extracted-source builds and printable one-page drafts. No major feature
+expansion is recommended before submission. Use the [handover checklist](SUBMISSION_CHECKLIST.md)
+for the remaining candidate review and rehearsal.
+
 The initial 2–3 focused-day estimate includes implementation, learning, validation,
 writing and rehearsal for someone refreshing ROS. Assisted implementation has now
 produced a working baseline; that does not remove the time needed to understand

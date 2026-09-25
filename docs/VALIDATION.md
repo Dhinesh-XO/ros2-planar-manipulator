@@ -1,5 +1,10 @@
 # Validation approach and evidence
 
+For the later 22-test hardening pass, repeated cycles and process-failure checks,
+see [submission audit](SUBMISSION_AUDIT.md). The earlier baseline/enhancement
+results below retain their original context; do not add them together as distinct
+unit-test counts.
+
 ## Why three forms of evidence
 
 A moving picture can conceal invalid geometry, hard-coded animation or missing

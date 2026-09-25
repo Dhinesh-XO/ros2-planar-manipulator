@@ -41,8 +41,10 @@ network. This development run validated local communication only.
 The GUI defaults to pick **(4,2)** and place **(-3,3)**. Click **Run pick and
 place**. The controller advances only after measured motion completion and
 grasp/release confirmation. The richer sequence is approach → pick → lift →
-transfer → place → retreat. It ends with the **object at (-3,3)** and the
-**tool at (-3,3.7)**. All intermediate targets are checked before admission.
+transfer → place → retreat. In the software backend it ends with the **object
+at (-3,3)** and the **tool at (-3,3.7)**. Gazebo commands the same release target;
+its object settles about 5 mm lower onto the support (see the documented physical
+clearance below). All intermediate targets are checked before admission.
 Solid meshes and the orbitable camera are a 3D presentation of the same planar
 kinematics, not a new spatial arm. The second view retains the 2D ground plot.
 
@@ -146,12 +148,13 @@ and [third-party notice](src/planar_arm_control/third_party/NOTICE.md).
 
 ## Validate and record
 
-Run with no other controller on the project domain:
+Use an unused domain, leaving an operator's live controller alone:
 
 ```bash
-source scripts/env.sh
+KINESHIA_ROS_DOMAIN_ID=72 source scripts/env.sh
 python -m pytest src/planar_arm_control/test -q
 python scripts/validate_ros.py
+python scripts/validate_reliability.py --gui
 # Physical-backend check on a separate, unused domain:
 KINESHIA_ROS_DOMAIN_ID=71 source scripts/env.sh
 python scripts/validate_gazebo.py
@@ -174,9 +177,21 @@ it does not import the controller, planner or supplied kinematics. See
 ## Learning and submission
 
 Start with [learning notes and rehearsal questions](docs/LEARNING_NOTES.md).
+Use the [submission checklist and two-minute explanation](docs/SUBMISSION_CHECKLIST.md)
+for the final review, and [final audit](docs/SUBMISSION_AUDIT.md) for its evidence.
 Review the [one-page design-note draft](docs/DESIGN_NOTE.md) and
 [hardware-transition answer draft](docs/HARDWARE_TRANSITION.md) in your own words.
 The assignment permits AI assistance and requires you to explain the work.
+
+To regenerate printable review drafts after editing (optional documentation tool):
+
+```bash
+# Requires the OS package python3-reportlab; not a controller dependency.
+/usr/bin/python3 scripts/render_submission_notes.py
+```
+
+The PDFs go to `artifacts/submission-notes/`. Review drafts are not a substitute
+for your own explanation; this step does not send a submission.
 
 Submit a Git repository link, or a ZIP **including .git history**, these written
 deliverables, and a 1–3 minute recording. Generated artifacts are Git-ignored;

@@ -115,13 +115,14 @@ Command/feedback pairs are matched by source timestamp before computing error.
 The controller has two executor threads and separate callback groups for command
 planning and timed execution. Shared state is guarded by an RLock. Initial IK
 planning happens without holding that lock, so timer publications can continue.
-There is a short measured-state replan at the pick-to-place transition. This is
+There is a measured-state replan at each motion-leg transition, under the lock. This is
 a measured soft-real-time Python application, not a hard-real-time system.
 
-Sequence states: PLANNING -> MOVING_TO_PICK -> PICKING -> MOVING_TO_PLACE ->
-PLACING -> SUCCEEDED. Grasp/release are explicit timed simulation states. A move
-failure cannot be reported as a completed pick/place. Both paths are preflighted
-before starting, and the second segment is checked again from actual state.
+The enhanced sequence is PLANNING -> APPROACH_PICK -> MOVING_TO_PICK -> PICKING
+-> LIFTING -> TRANSFERRING -> APPROACH_PLACE -> MOVING_TO_PLACE -> PLACING
+-> RETREATING -> SUCCEEDED. Grasp/release are explicit dwell/acknowledgement
+states. A move failure cannot be reported as a completed pick/place. All seven
+motion legs are preflighted before starting, then rechecked from actual state.
 
 Busy commands are rejected, not silently queued. Cancel holds the present pose;
 if an object was held, it remains held. Reset is explicitly a simulation reset
@@ -157,7 +158,7 @@ terminal; control ownership is independent of the window.
 We preserve the file byte-for-byte. The adapter rejects invalid results and checks
 Cartesian residual. Already-reached targets retain their current configuration.
 We do not claim the adapter repairs the IK algorithm or explores all solutions.
-Joint 3 can remain flat in the prescribed demo because of the supplied solver.
+The original analytical-only baseline could leave joint 3 flat in its demo.
 The enhanced adapter also tries the **provided** Jacobian solver, validates
 both candidates and chooses a nearby valid result. In the enhanced fixed
 scenario all three joints move; the supplied file itself is still unchanged.
