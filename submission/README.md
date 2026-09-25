@@ -14,9 +14,10 @@ no separate download of a local build tree or simulator dependency is needed.
 | Build/run instructions and interfaces | [Project README](../README.md) |
 | Validation and limitations | [Submission audit](../docs/SUBMISSION_AUDIT.md) |
 
-The written answers remain explicitly labelled **review drafts** until the
-candidate has checked them in their own words. Implementation/test completion
-does not replace that requirement in the brief.
+The written answers are now formatted in plain English for submission. Read them
+before sending and adjust any wording that does not reflect your understanding;
+the brief's own-words requirement still applies. See the
+[submission format and email template](SUBMISSION_EMAIL.md) for the final sending steps.
 
 ## What the recordings show
 
@@ -62,5 +63,5 @@ This verifies file integrity, not a new execution of the robot tests.
 
 Developers can regenerate the PDFs with `scripts/render_submission_notes.py`,
 then export the allowlisted local evidence with `scripts/prepare_submission.py`.
-Review and commit those changes; do not silently remove the draft labels or
-replace failed evidence with an assertion of success.
+Review and commit those changes. Formatting an answer does not establish the
+candidate's understanding, and failed evidence must not be presented as a pass.

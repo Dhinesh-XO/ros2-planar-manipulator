@@ -24,7 +24,8 @@ checks improve the submission; they cannot predict the hiring decision.
 ## Your remaining decisions
 
 - Rewrite/review the design note and hardware answer until every sentence is
-  something you can defend. The generated one-page PDFs remain labelled drafts.
+  something you can defend. The one-page PDFs now use plain English and are
+  formatted for submission; read them before sending.
 - Check the deadline and timezone in the actual assessment correspondence.
 - Decide whether to add your own 1–3 minute narration. Do not claim that you
   authored the provided library or the attributed logging helper.

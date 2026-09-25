@@ -1,5 +1,10 @@
 # Submission-readiness audit — 25 September 2026
 
+This records the engineering audit at that point in the history. The later
+documentation closeout rewrote the two answers in plain English and regenerated
+their one-page PDFs. Earlier references below to review drafts describe the
+audit-time versions. The runtime code and recorded test evidence are unchanged.
+
 Scope: freeze the architecture and robot geometry; improve failure containment,
 reproducibility and explanation. This is a simulation assessment, not hardware
 safety certification or a prediction of the hiring outcome.

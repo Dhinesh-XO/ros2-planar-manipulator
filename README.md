@@ -13,7 +13,9 @@ the primary 75-second demonstration, the optional Gazebo recording and selected
 passing test evidence. These files are tracked in Git and available after cloning.
 Prepared for the Kineshia Robotics simulation-only assessment. Repository:
 [Dhinesh-XO/ros2-planar-manipulator](https://github.com/Dhinesh-XO/ros2-planar-manipulator).
-The written answers are review drafts pending the candidate's own-words review.
+The written answers use plain English; the candidate must confirm understanding
+before sending them. A [submission email template](submission/SUBMISSION_EMAIL.md)
+and the document's submission requirements are included.
 See [source provenance and evaluation-use notice](NOTICE.md) before publication.
 
 ![PyQt workcell during the transfer phase](submission/media/workcell.png)
@@ -195,11 +197,12 @@ it does not import the controller, planner or supplied kinematics. See
 Start with [learning notes and rehearsal questions](docs/LEARNING_NOTES.md).
 Use the [submission checklist and two-minute explanation](docs/SUBMISSION_CHECKLIST.md)
 for the final review, and [final audit](docs/SUBMISSION_AUDIT.md) for its evidence.
-Review the [one-page design-note draft](docs/DESIGN_NOTE.md) and
-[hardware-transition answer draft](docs/HARDWARE_TRANSITION.md) in your own words.
+Read the [one-page design note](docs/DESIGN_NOTE.md) and
+[hardware-transition answer](docs/HARDWARE_TRANSITION.md), and make sure they
+reflect your understanding before sending them.
 The assignment permits AI assistance and requires you to explain the work.
 
-To regenerate printable review drafts after editing (optional documentation tool):
+To regenerate the printable answers after editing (optional documentation tool):
 
 ```bash
 # Requires the OS package python3-reportlab; not a controller dependency.
@@ -210,7 +213,7 @@ The PDFs go to `artifacts/submission-notes/`. To update their tracked copies and
 the selected evidence, run `python scripts/prepare_submission.py`, review the
 diff and commit it. A fresh clone can verify the tracked evidence with
 `python scripts/prepare_submission.py --check` without needing local artifacts.
-Review drafts are not a substitute for your own explanation.
+The written answers are not a substitute for your own explanation.
 
 Submit a Git repository link, or a ZIP **including .git history**, these written
 deliverables, and a 1–3 minute recording. Temporary artifacts remain Git-ignored;

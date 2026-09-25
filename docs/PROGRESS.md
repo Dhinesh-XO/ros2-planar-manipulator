@@ -16,7 +16,7 @@
 | Required coordinates and projected edge case | Demonstrated and independently checked |
 | Clean package and launch | Two packages build; normal launch starts both nodes |
 | README and design note | Present; design note awaits your ownership review |
-| Hardware-transition answer | Draft present; rewrite/review in your own words |
+| Hardware-transition answer | Plain-English one-page answer; confirm it reflects your understanding |
 | Git history | Preserved starter followed by implementation milestones |
 | 1–3 minute recording | Enhanced software demo 75.2 s; Gazebo demo 70.8 s in artifacts |
 | Optional second mode/error plot | Velocity/PID simulation implemented and tested |
@@ -29,9 +29,14 @@
 
 The final engineering pass is documented in [submission audit](SUBMISSION_AUDIT.md):
 fault-path hardening, additional regression tests, repeat/cancel/restart checks,
-clean extracted-source builds and printable one-page drafts. No major feature
+clean extracted-source builds and printable one-page notes. No major feature
 expansion is recommended before submission. Use the [handover checklist](SUBMISSION_CHECKLIST.md)
 for the remaining candidate review and rehearsal.
+
+The final handover now includes plain-English answers and a
+[submission email template](../submission/SUBMISSION_EMAIL.md). Engineering and
+document preparation are complete. The candidate still needs to read the answers,
+arrange reviewer access or send the history-containing ZIP, and send the email.
 
 The initial 2–3 focused-day estimate includes implementation, learning, validation,
 writing and rehearsal for someone refreshing ROS. Assisted implementation has now

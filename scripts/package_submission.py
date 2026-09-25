@@ -10,6 +10,7 @@ import hashlib
 import json
 from pathlib import Path
 import subprocess
+import sys
 import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -22,6 +23,8 @@ def git(*args):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('destination', type=Path)
+    parser.add_argument('--tracked-only', action='store_true',
+                        help='Use Git-tracked submission evidence; works from a fresh clone')
     args = parser.parse_args()
     if git('status', '--porcelain'):
         parser.error('Commit/review the worktree first; the bundle must match its Git history.')
@@ -45,9 +48,14 @@ def main():
                    'artifacts/submission-audit/clean-package'):
         artifacts.extend(str(p.relative_to(ROOT)) for p in sorted((ROOT / folder).rglob('*'))
                          if p.is_file())
-    for report in ('artifacts/submission-audit/reliability-final/report.json',
-                   'artifacts/submission-audit/physics/gazebo_validation.json'):
-        assert json.loads((ROOT / report).read_text())['passed'], f'Failed evidence: {report}'
+    if args.tracked_only:
+        artifacts = []
+        subprocess.run([sys.executable, str(ROOT / 'scripts/prepare_submission.py'), '--check'],
+                       cwd=ROOT, check=True)
+    else:
+        for report in ('artifacts/submission-audit/reliability-final/report.json',
+                       'artifacts/submission-audit/physics/gazebo_validation.json'):
+            assert json.loads((ROOT / report).read_text())['passed'], f'Failed evidence: {report}'
     files = [*git('ls-files').splitlines(), *artifacts]
     files.extend(str(p.relative_to(ROOT)) for p in sorted((ROOT / '.git').rglob('*'))
                  if p.is_file() and not p.name.endswith('.lock'))
@@ -55,7 +63,7 @@ def main():
     manifest = {
         'source_commit': git('rev-parse', 'HEAD'),
         'recordings_source_commit': 'b0bb113',
-        'notes': ['Written answers are review drafts; candidate ownership review remains.',
+        'notes': ['Plain-English submission notes; candidate must confirm understanding before sending.',
                   'Recordings precede fault-path hardening; audit reports cover those fixes.',
                   'Clean extraction tests use the same Ubuntu/Humble system, not a fresh OS.',
                   'Gazebo and its compatible bridge must be installed separately.'],

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Render the two short Markdown notes as printable, explicitly labelled drafts.
+"""Render the two short Markdown answers as printable assessment notes.
 
 Uses reportlab only for documentation, not at controller runtime. This deliberately
 small renderer accepts a title plus plain paragraphs, as used by these two notes.
@@ -29,28 +29,25 @@ def render(source, destination):
     styles = {
         'title': ParagraphStyle('Title', fontName='Helvetica-Bold', fontSize=16,
                                 leading=20, spaceAfter=10, textColor=colors.HexColor('#17394b')),
-        'draft': ParagraphStyle('Draft', fontName='Helvetica-Oblique', fontSize=9.5,
-                                leading=13, spaceAfter=10, textColor=colors.HexColor('#555555')),
         'body': ParagraphStyle('Body', fontName='Helvetica', fontSize=10.5,
                                leading=14, spaceAfter=8),
     }
     story = [Paragraph(markup(title), styles['title'])]
-    for index, block in enumerate(blocks):
-        story.append(Paragraph(markup(' '.join(block.splitlines())),
-                               styles['draft' if index == 0 else 'body']))
+    for block in blocks:
+        story.append(Paragraph(markup(' '.join(block.splitlines())), styles['body']))
 
     def footer(canvas, document):
         canvas.saveState()
         canvas.setFont('Helvetica', 8)
         canvas.setFillColor(colors.HexColor('#666666'))
-        canvas.drawString(18*mm, 12*mm, 'Kineshia Robotics assessment | Review draft')
+        canvas.drawString(18*mm, 12*mm, 'Kineshia Robotics assessment | ROS 2 Planar Manipulator')
         canvas.drawRightString(A4[0]-18*mm, 12*mm, str(document.page))
         canvas.restoreState()
 
     document = SimpleDocTemplate(str(destination), pagesize=A4,
                                  leftMargin=18*mm, rightMargin=18*mm,
                                  topMargin=17*mm, bottomMargin=20*mm,
-                                 title=title, author='Assessment working draft')
+                                 title=title, author='ROS 2 Planar Manipulator')
     document.build(story, onFirstPage=footer, onLaterPages=footer)
     print(destination)
 

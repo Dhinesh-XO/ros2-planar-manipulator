@@ -3,7 +3,7 @@
   "audited_runtime_commit": "d42119d",
   "recordings_commit": "b0bb113",
   "supplied_library_sha256": "1e1c5f4bb5718839da924d192458fb2a679cc25cbded89cccf04381ad16f3dde",
-  "written_answers": "Review drafts; candidate must review in their own words.",
+  "written_answers": "Plain-English submission notes; candidate must confirm understanding before sending.",
   "validation_scope": "Simulation on Ubuntu 22.04 / ROS 2 Humble; not hardware or fresh-OS validation.",
   "source_artifacts": {
     "design-note.pdf": "artifacts/submission-notes/DESIGN_NOTE.pdf",
@@ -20,8 +20,8 @@
     "evidence/gazebo.json": "artifacts/submission-audit/physics/gazebo_validation.json"
   },
   "sha256": {
-    "design-note.pdf": "0e88e4d6c4bbbf543777d07e1a6bab5722818e449d70b8807ddf2a829610ac14",
-    "simulation-to-hardware.pdf": "f93e33e1eabc35bc8ff5b13a8ca94c1e1cac9674a875ce8245c396bb8853634e",
+    "design-note.pdf": "f576b53c1949648742cc7bb3e2aa697f64d324517f5d9d98ae73ce2ed6f6f746",
+    "simulation-to-hardware.pdf": "8bac722041f2bd90dee011b5739fdd0ac0a8937c938a828c5200bef12267c79e",
     "media/pick-and-place.mp4": "5ebcd5e465276c2c9331647049c56110cf2e07fb471273fdd5630bcec4f45c65",
     "media/gazebo-pick-and-place.mp4": "9622f3c4f33a84ac746bf06ca5f9a6b9c52c33f2c07d9d7f01d26989b9e7401b",
     "media/workcell.png": "8637942b22d39716ca8027a8be5ca8d93d84b53ccee1af0a4c09a64e02088792",

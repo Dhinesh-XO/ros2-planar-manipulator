@@ -72,7 +72,7 @@ def main():
             'audited_runtime_commit': AUDITED_COMMIT,
             'recordings_commit': RECORDING_COMMIT,
             'supplied_library_sha256': LIBRARY_SHA256,
-            'written_answers': 'Review drafts; candidate must review in their own words.',
+            'written_answers': 'Plain-English submission notes; candidate must confirm understanding before sending.',
             'validation_scope': 'Simulation on Ubuntu 22.04 / ROS 2 Humble; not hardware or fresh-OS validation.',
             'source_artifacts': FILES,
             'sha256': {name: digest(destination / name) for name in FILES},
