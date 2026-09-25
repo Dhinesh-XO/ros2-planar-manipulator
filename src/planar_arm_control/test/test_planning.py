@@ -103,3 +103,23 @@ def test_interval_certificate_against_independent_random_geometry():
         for scalar in np.linspace(0, 1, 101):
             assert np.min(independent_points(a + scalar * (b-a))[:, 1]) >= -1e-6
     assert accepted > 20
+
+
+def test_enhanced_route_preserves_fixed_targets_and_uses_three_joints():
+    route = Planner().pick_place_route(INITIAL_Q, (4,2), (-3,3), 1.5)
+    assert [phase for phase, _ in route] == [
+        'APPROACH_PICK', 'MOVING_TO_PICK', 'LIFTING', 'TRANSFERRING',
+        'APPROACH_PLACE', 'MOVING_TO_PLACE', 'RETREATING']
+    poses = np.array([plan.goal for _, plan in route])
+    assert np.all(np.ptp(poses, axis=0) > 0.1)
+    np.testing.assert_allclose(independent_points(route[1][1].goal)[-1], (4,2), atol=1e-4)
+    np.testing.assert_allclose(independent_points(route[-2][1].goal)[-1], (-3,3), atol=1e-4)
+    for _, plan in route:
+        assert not plan.projected
+        for t in np.linspace(0, plan.duration, 101):
+            assert independent_points(plan.sample(t)[0])[:,1].min() >= -1e-6
+
+
+def test_route_rejects_unreachable_clearance_waypoint_before_execution():
+    with pytest.raises(PlanningError):
+        Planner().pick_place_route(INITIAL_Q, (6.4,0.5), (-3,3), 2.0)

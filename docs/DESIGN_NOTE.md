@@ -20,10 +20,13 @@ The backend abstraction separates references from execution and measured state.
 Position mode is ideal kinematic playback. The optional velocity/PID mode includes
 velocity saturation, a bounded integral and an illustrative first-order velocity
 actuator, producing meaningful tracking error. It is not a dynamics/current model.
-Completion checks measured position and velocity, with a settling timeout.
+The optional Gazebo backend bridges actual physical state and position targets.
+Completion checks measured position and velocity for 150 ms, with a settling timeout.
 
 Pick/place is a controller-owned state machine with preflight checks and simulated
-grasp/release dwell. Busy requests are rejected; cancellation stops and holds.
+grasp/release dwell (and physical attachment acknowledgements in Gazebo). Approach,
+lift, transfer and retreat surround the required operations. Busy requests are
+rejected; cancellation stops and holds, while success retains the settled target.
 Single moves may project beyond-reach targets, with requested/resolved coordinates
 shown in the GUI. Object operations reject projection to avoid claiming a grasp
 at the wrong point. Reset explicitly resets simulation, not physical hardware.
@@ -36,6 +39,11 @@ command/feedback timestamps are matched before calculating error. Stale telemetr
 disables new GUI commands. Measured timer jitter is reported; no hard-real-time
 guarantee is claimed. A short place replan still runs during a timer transition.
 
+An orbitable solid-link workcell is a 3D rendering of the same planar FK, not a
+different robot. A separate recorder reuses an attributed Apache-2.0 CSV/JSONL
+helper; it observes state/reference/status without commanding motion or adding
+disk I/O to the controller. Other reviewed robots' IK and meshes are not reused.
+
 Validation combines independent geometry tests, a separate-process ROS witness
 and a reproducible GUI recording. The witness checks constraints, sequence order,
 endpoint accuracy, projection, rejection, cancellation and message timing. The
@@ -45,5 +53,6 @@ correction in the analytical branch; these are documented rather than edited.
 
 With more time, priorities are a standard pick/place action, worker-based planning
 for every transition, a richer path search, restart/fault tests and a hardware
-backend with measured feedback and device-side watchdogs. Gazebo and torque/current
-control are intentionally outside this implementation's demonstrated scope.
+backend with measured feedback and device-side watchdogs. Gazebo uses a simplified
+attachment grasp and fixture collisions, with a documented 5 mm release gap;
+it is not frictional-grasp or hardware validation. Current control is not implemented.

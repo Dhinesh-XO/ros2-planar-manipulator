@@ -18,9 +18,12 @@
 | README and design note | Present; design note awaits your ownership review |
 | Hardware-transition answer | Draft present; rewrite/review in your own words |
 | Git history | Preserved starter followed by implementation milestones |
-| 1–3 minute recording | 75.1-second actual GUI recording in artifacts |
+| 1–3 minute recording | Enhanced software demo 75.2 s; Gazebo demo 70.8 s in artifacts |
 | Optional second mode/error plot | Velocity/PID simulation implemented and tested |
-| Optional ROS action / Gazebo | Not implemented; deliberately outside current scope |
+| Optional Gazebo | Implemented; physical feedback, object transfer and clock-stall test passed |
+| Optional ROS action | Not implemented; typed services/status/cancel remain the interface |
+| Solid-link 3D GUI | Implemented in PyQtGraph; unchanged planar geometry and 2D view retained |
+| Repository reuse | Isolated telemetry helper integrated with attribution; see REPOSITORY_REVIEW.md |
 
 ## Time estimate and focused next steps
 

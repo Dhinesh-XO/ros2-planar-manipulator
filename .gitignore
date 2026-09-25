@@ -6,6 +6,7 @@ __pycache__/
 .vscode/
 .idea/
 .venv/
+.deps/
 artifacts/
 .pytest_cache/
 *.egg-info/

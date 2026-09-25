@@ -127,10 +127,15 @@ def validate_mode(mode):
             assert not future.result().results[0].successful, 'Mode change accepted during motion'
             witness.completed(response.command_id)
             phases = [event[1] for event in witness.events if event[0] == response.command_id]
-            required = ['MOVING_TO_PICK', 'PICKING', 'MOVING_TO_PLACE', 'PLACING', 'SUCCEEDED']
+            required = ['APPROACH_PICK', 'MOVING_TO_PICK', 'PICKING', 'LIFTING',
+                        'TRANSFERRING', 'APPROACH_PLACE', 'MOVING_TO_PLACE',
+                        'PLACING', 'RETREATING', 'SUCCEEDED']
             assert [phase for phase in phases if phase in required] == required, phases
             assert not witness.latest.holding_object and witness.latest.object_visible
-            assert np.linalg.norm(np.array(witness.samples[-1][7:9]) - [-3, 3]) < 0.02
+            assert np.linalg.norm(np.array(witness.samples[-1][7:9]) - [-3, 3.7]) < 0.02
+            assert np.linalg.norm(np.array([witness.latest.object_position.x,
+                                           witness.latest.object_position.y])-[-3,3]) < 0.02
+            assert np.all(np.ptp(np.array(witness.samples)[:,1:4], axis=0) > 0.1), 'Not all joints moved'
             sequence_samples = len(witness.samples)
 
             response = witness.call(witness.move, MoveTo.Request(target=Point(x=7.0, y=3.0), duration=1.5))

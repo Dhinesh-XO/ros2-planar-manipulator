@@ -1,0 +1,670 @@
+<?xml version="1.0"?>
+<!-- Planar 3R arm: one brief length unit = 0.1 m; math (x,y) maps to world (0.1*x,0,0.08+0.1*y). Grasp uses an explicit detachable constraint. -->
+<sdf version="1.9">
+  <world name="workcell">
+    <physics name="physics" type="ignored">
+      <max_step_size>.001</max_step_size>
+      <real_time_factor>1</real_time_factor>
+    </physics>
+    <gravity>0 0 -9.81</gravity>
+    <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics"/>
+    <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands"/>
+    <plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster"/>
+    <scene>
+      <ambient>.5 .5 .5 1</ambient>
+      <background>.10 .14 .20 1</background>
+      <shadows>true</shadows>
+    </scene>
+    <light name="key" type="directional">
+      <pose>0 0 3 0 0 0</pose>
+      <direction>-.4 .4 -1</direction>
+      <diffuse>.9 .9 .9 1</diffuse>
+      <specular>.3 .3 .3 1</specular>
+      <cast_shadows>true</cast_shadows>
+    </light>
+    <model name="floor">
+      <static>true</static>
+      <link name="floor">
+        <visual name="floor">
+          <pose>0 0 -.015 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>2.0 1.2 .03</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.25 0.30 0.36 1</ambient>
+            <diffuse>0.25 0.30 0.36 1</diffuse>
+            <specular>0.25 0.25 0.25 1</specular>
+          </material>
+        </visual>
+        <collision name="floor_collision">
+          <pose>0 0 -.015 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>2.0 1.2 .03</size>
+            </box>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="pick_station">
+      <static>true</static>
+      <link name="frame">
+        <visual name="column">
+          <pose>0.4 .12 0.13 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>.05 .04 0.26</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.22 0.28 0.34 1</ambient>
+            <diffuse>0.22 0.28 0.34 1</diffuse>
+            <specular>0.25 0.25 0.25 1</specular>
+          </material>
+        </visual>
+        <visual name="backboard">
+          <pose>0.4 .09 0.255 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>.14 .06 .025</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.13 0.57 0.62 1</ambient>
+            <diffuse>0.13 0.57 0.62 1</diffuse>
+            <specular>0.25 0.25 0.25 1</specular>
+          </material>
+        </visual>
+        <visual name="rail-1">
+          <pose>0.4 -0.023 0.2575 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>.075 .020 .01</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.13 0.57 0.62 1</ambient>
+            <diffuse>0.13 0.57 0.62 1</diffuse>
+            <specular>0.25 0.25 0.25 1</specular>
+          </material>
+        </visual>
+        <collision name="support-1_collision">
+          <pose>0.4 -0.023 0.2575 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>.075 .020 .01</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rail1">
+          <pose>0.4 0.023 0.2575 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>.075 .020 .01</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.13 0.57 0.62 1</ambient>
+            <diffuse>0.13 0.57 0.62 1</diffuse>
+            <specular>0.25 0.25 0.25 1</specular>
+          </material>
+        </visual>
+        <collision name="support1_collision">
+          <pose>0.4 0.023 0.2575 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>.075 .020 .01</size>
+            </box>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="place_station">
+      <static>true</static>
+      <link name="frame">
+        <visual name="column">
+          <pose>-0.3 .12 0.18 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>.05 .04 0.36</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.22 0.28 0.34 1</ambient>
+            <diffuse>0.22 0.28 0.34 1</diffuse>
+            <specular>0.25 0.25 0.25 1</specular>
+          </material>
+        </visual>
+        <visual name="backboard">
+          <pose>-0.3 .09 0.355 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>.14 .06 .025</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.58 0.38 0.74 1</ambient>
+            <diffuse>0.58 0.38 0.74 1</diffuse>
+            <specular>0.25 0.25 0.25 1</specular>
+          </material>
+        </visual>
+        <visual name="rail-1">
+          <pose>-0.3 -0.023 0.3525 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>.075 .020 .01</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.58 0.38 0.74 1</ambient>
+            <diffuse>0.58 0.38 0.74 1</diffuse>
+            <specular>0.25 0.25 0.25 1</specular>
+          </material>
+        </visual>
+        <collision name="support-1_collision">
+          <pose>-0.3 -0.023 0.3525 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>.075 .020 .01</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="rail1">
+          <pose>-0.3 0.023 0.3525 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>.075 .020 .01</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.58 0.38 0.74 1</ambient>
+            <diffuse>0.58 0.38 0.74 1</diffuse>
+            <specular>0.25 0.25 0.25 1</specular>
+          </material>
+        </visual>
+        <collision name="support1_collision">
+          <pose>-0.3 0.023 0.3525 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>.075 .020 .01</size>
+            </box>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="payload">
+      <pose>.4 0 .28 0 0 0</pose>
+      <link name="body">
+        <inertial>
+          <mass>.03</mass>
+          <inertia>
+            <ixx>.000006125</ixx>
+            <iyy>.000006125</iyy>
+            <izz>.000006125</izz>
+          </inertia>
+        </inertial>
+        <visual name="cube">
+          <pose>0 0 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>.035 .035 .035</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.96 0.40 0.16 1</ambient>
+            <diffuse>0.96 0.40 0.16 1</diffuse>
+            <specular>0.25 0.25 0.25 1</specular>
+          </material>
+        </visual>
+        <collision name="cube_collision">
+          <pose>0 0 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>.035 .035 .035</size>
+            </box>
+          </geometry>
+        </collision>
+      </link>
+      <plugin filename="gz-sim-pose-publisher-system" name="gz::sim::systems::PosePublisher">
+        <publish_model_pose>true</publish_model_pose>
+        <publish_link_pose>false</publish_link_pose>
+        <use_pose_vector_msg>true</use_pose_vector_msg>
+        <update_frequency>50</update_frequency>
+      </plugin>
+    </model>
+    <model name="arm">
+      <!-- A fixed lateral tool bracket reaches the payload plane, while the
+           links run 6 cm behind it. All axes remain parallel; math X/Y and
+           link lengths are unchanged. -->
+      <pose>0 .06 0.08 0 0 0</pose>
+      <self_collide>false</self_collide>
+      <link name="base">
+        <inertial>
+          <mass>2</mass>
+          <inertia>
+            <ixx>.01</ixx>
+            <iyy>.01</iyy>
+            <izz>.01</izz>
+          </inertia>
+        </inertial>
+        <visual name="pedestal">
+          <pose>0 0 -0.04 0 0 0</pose>
+          <geometry>
+            <cylinder>
+              <radius>0.05</radius>
+              <length>0.08</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.12 0.16 0.21 1</ambient>
+            <diffuse>0.12 0.16 0.21 1</diffuse>
+            <specular>0.25 0.25 0.25 1</specular>
+          </material>
+        </visual>
+        <collision name="base_collision">
+          <pose>0 0 -0.04 0 0 0</pose>
+          <geometry>
+            <cylinder>
+              <radius>0.05</radius>
+              <length>0.08</length>
+            </cylinder>
+          </geometry>
+        </collision>
+      </link>
+      <joint name="fixed_base" type="fixed">
+        <parent>world</parent>
+        <child>base</child>
+      </joint>
+      <link name="link_1">
+        <pose relative_to="base">0 0 0 0 0 0</pose>
+        <inertial>
+          <pose>0.15 0 0 0 0 0</pose>
+          <mass>0.6</mass>
+          <inertia>
+            <ixx>0.00004</ixx>
+            <iyy>0.00452</iyy>
+            <izz>0.00452</izz>
+          </inertia>
+        </inertial>
+        <visual name="beam">
+          <pose>0.15 0 0 0 1.57079632679 0</pose>
+          <geometry>
+            <cylinder>
+              <radius>0.011</radius>
+              <length>0.27799999999999997</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.95 0.64 0.12 1</ambient>
+            <diffuse>0.95 0.64 0.12 1</diffuse>
+            <specular>0.25 0.25 0.25 1</specular>
+          </material>
+        </visual>
+        <visual name="hub">
+          <pose>0 0 0 1.57079632679 0 0</pose>
+          <geometry>
+            <cylinder>
+              <radius>0.02</radius>
+              <length>0.04</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.19 0.24 0.30 1</ambient>
+            <diffuse>0.19 0.24 0.30 1</diffuse>
+            <specular>0.25 0.25 0.25 1</specular>
+          </material>
+        </visual>
+        <collision name="beam_collision">
+          <pose>0.15 0 0 0 1.57079632679 0</pose>
+          <geometry>
+            <cylinder>
+              <radius>0.008</radius>
+              <length>0.27499999999999997</length>
+            </cylinder>
+          </geometry>
+        </collision>
+      </link>
+      <joint name="joint_1" type="revolute">
+        <parent>base</parent>
+        <child>link_1</child>
+        <axis>
+          <xyz>0 -1 0</xyz>
+          <limit>
+            <lower>0</lower>
+            <upper>3.141592653589793</upper>
+            <effort>12</effort>
+            <velocity>1.5</velocity>
+          </limit>
+          <dynamics>
+            <damping>0.08</damping>
+          </dynamics>
+        </axis>
+      </joint>
+      <plugin filename="gz-sim-joint-position-controller-system" name="gz::sim::systems::JointPositionController">
+        <joint_name>joint_1</joint_name>
+        <topic>/arm/joint_1/command</topic>
+        <p_gain>120</p_gain>
+        <i_gain>100</i_gain>
+        <d_gain>3</d_gain>
+        <i_max>8</i_max>
+        <i_min>-8</i_min>
+        <cmd_max>12</cmd_max>
+        <cmd_min>-12</cmd_min>
+        <initial_position>0.5235987755982988</initial_position>
+      </plugin>
+      <link name="link_2">
+        <pose relative_to="link_1">0.3 0 0 0 0 0</pose>
+        <inertial>
+          <pose>0.1 0 0 0 0 0</pose>
+          <mass>0.4</mass>
+          <inertia>
+            <ixx>0.00002666666666666667</ixx>
+            <iyy>0.001346666666666667</iyy>
+            <izz>0.001346666666666667</izz>
+          </inertia>
+        </inertial>
+        <visual name="beam">
+          <pose>0.1 0 0 0 1.57079632679 0</pose>
+          <geometry>
+            <cylinder>
+              <radius>0.011</radius>
+              <length>0.17800000000000002</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.86 0.91 0.93 1</ambient>
+            <diffuse>0.86 0.91 0.93 1</diffuse>
+            <specular>0.25 0.25 0.25 1</specular>
+          </material>
+        </visual>
+        <visual name="hub">
+          <pose>0 0 0 1.57079632679 0 0</pose>
+          <geometry>
+            <cylinder>
+              <radius>0.02</radius>
+              <length>0.04</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.19 0.24 0.30 1</ambient>
+            <diffuse>0.19 0.24 0.30 1</diffuse>
+            <specular>0.25 0.25 0.25 1</specular>
+          </material>
+        </visual>
+        <collision name="beam_collision">
+          <pose>0.1 0 0 0 1.57079632679 0</pose>
+          <geometry>
+            <cylinder>
+              <radius>0.008</radius>
+              <length>0.17500000000000002</length>
+            </cylinder>
+          </geometry>
+        </collision>
+      </link>
+      <joint name="joint_2" type="revolute">
+        <parent>link_1</parent>
+        <child>link_2</child>
+        <axis>
+          <xyz>0 -1 0</xyz>
+          <limit>
+            <lower>-2.09439510239</lower>
+            <upper>2.09439510239</upper>
+            <effort>12</effort>
+            <velocity>1.5</velocity>
+          </limit>
+          <dynamics>
+            <damping>0.08</damping>
+          </dynamics>
+        </axis>
+      </joint>
+      <plugin filename="gz-sim-joint-position-controller-system" name="gz::sim::systems::JointPositionController">
+        <joint_name>joint_2</joint_name>
+        <topic>/arm/joint_2/command</topic>
+        <p_gain>50</p_gain>
+        <i_gain>25</i_gain>
+        <d_gain>.7</d_gain>
+        <i_max>3</i_max>
+        <i_min>-3</i_min>
+        <cmd_max>12</cmd_max>
+        <cmd_min>-12</cmd_min>
+        <initial_position>-0.3490658503988659</initial_position>
+      </plugin>
+      <link name="link_3">
+        <pose relative_to="link_2">0.2 0 0 0 0 0</pose>
+        <inertial>
+          <pose>0.075 0 0 0 0 0</pose>
+          <mass>0.2</mass>
+          <inertia>
+            <ixx>0.000013333333333333335</ixx>
+            <iyy>0.00038166666666666666</iyy>
+            <izz>0.00038166666666666666</izz>
+          </inertia>
+        </inertial>
+        <visual name="beam">
+          <pose>0.075 0 0 0 1.57079632679 0</pose>
+          <geometry>
+            <cylinder>
+              <radius>0.011</radius>
+              <length>0.128</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.16 0.66 0.79 1</ambient>
+            <diffuse>0.16 0.66 0.79 1</diffuse>
+            <specular>0.25 0.25 0.25 1</specular>
+          </material>
+        </visual>
+        <visual name="hub">
+          <pose>0 0 0 1.57079632679 0 0</pose>
+          <geometry>
+            <cylinder>
+              <radius>0.02</radius>
+              <length>0.04</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.19 0.24 0.30 1</ambient>
+            <diffuse>0.19 0.24 0.30 1</diffuse>
+            <specular>0.25 0.25 0.25 1</specular>
+          </material>
+        </visual>
+        <collision name="beam_collision">
+          <pose>0.075 0 0 0 1.57079632679 0</pose>
+          <geometry>
+            <cylinder>
+              <radius>0.008</radius>
+              <length>0.125</length>
+            </cylinder>
+          </geometry>
+        </collision>
+      </link>
+      <joint name="joint_3" type="revolute">
+        <parent>link_2</parent>
+        <child>link_3</child>
+        <axis>
+          <xyz>0 -1 0</xyz>
+          <limit>
+            <lower>-2.09439510239</lower>
+            <upper>2.09439510239</upper>
+            <effort>12</effort>
+            <velocity>1.5</velocity>
+          </limit>
+          <dynamics>
+            <damping>0.08</damping>
+          </dynamics>
+        </axis>
+      </joint>
+      <plugin filename="gz-sim-joint-position-controller-system" name="gz::sim::systems::JointPositionController">
+        <joint_name>joint_3</joint_name>
+        <topic>/arm/joint_3/command</topic>
+        <p_gain>12</p_gain>
+        <i_gain>5</i_gain>
+        <d_gain>.1</d_gain>
+        <i_max>3</i_max>
+        <i_min>-3</i_min>
+        <cmd_max>12</cmd_max>
+        <cmd_min>-12</cmd_min>
+        <initial_position>-0.17453292519943295</initial_position>
+      </plugin>
+      <link name="tool">
+        <pose relative_to="link_3">.15 -.06 0 0 0 0</pose>
+        <inertial>
+          <pose>0.0005 0 0 0 0 0</pose>
+          <mass>0.02</mass>
+          <inertia>
+            <ixx>0.0000013333333333333336</ixx>
+            <iyy>6.683333333333334e-7</iyy>
+            <izz>6.683333333333334e-7</izz>
+          </inertia>
+        </inertial>
+        <visual name="lateral_bracket">
+          <pose>0 .03 0 0 0 0</pose>
+          <geometry><box><size>.014 .06 .014</size></box></geometry>
+          <material><ambient>.4 .48 .55 1</ambient><diffuse>.4 .48 .55 1</diffuse></material>
+        </visual>
+        <visual name="palm">
+          <pose>-.022 0 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>.014 .065 .015</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.16 0.20 0.26 1</ambient>
+            <diffuse>0.16 0.20 0.26 1</diffuse>
+            <specular>0.25 0.25 0.25 1</specular>
+          </material>
+        </visual>
+      </link>
+      <joint name="tool_mount" type="fixed">
+        <parent>link_3</parent>
+        <child>tool</child>
+      </joint>
+      <link name="finger_left">
+        <pose relative_to="tool">0 0.0205 0 0 0 0</pose>
+        <inertial>
+          <pose>0.0005 0 0 0 0 0</pose>
+          <mass>0.005</mass>
+          <inertia>
+            <ixx>3.333333333333334e-7</ixx>
+            <iyy>1.6708333333333336e-7</iyy>
+            <izz>1.6708333333333336e-7</izz>
+          </inertia>
+        </inertial>
+        <visual name="finger">
+          <pose>-.006 0 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>.035 .006 .013</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.65 0.71 0.76 1</ambient>
+            <diffuse>0.65 0.71 0.76 1</diffuse>
+            <specular>0.25 0.25 0.25 1</specular>
+          </material>
+        </visual>
+      </link>
+      <joint name="gripper_left" type="prismatic">
+        <parent>tool</parent>
+        <child>finger_left</child>
+        <axis>
+          <xyz>0 1 0</xyz>
+          <limit>
+            <lower>0</lower>
+            <upper>.013</upper>
+            <effort>3</effort>
+          </limit>
+          <dynamics>
+            <damping>.1</damping>
+          </dynamics>
+        </axis>
+      </joint>
+      <plugin filename="gz-sim-joint-position-controller-system" name="gz::sim::systems::JointPositionController">
+        <joint_name>gripper_left</joint_name>
+        <topic>/arm/gripper/command</topic>
+        <use_velocity_commands>true</use_velocity_commands>
+        <cmd_max>.1</cmd_max>
+        <initial_position>.013</initial_position>
+      </plugin>
+      <link name="finger_right">
+        <pose relative_to="tool">0 -0.0205 0 0 0 0</pose>
+        <inertial>
+          <pose>0.0005 0 0 0 0 0</pose>
+          <mass>0.005</mass>
+          <inertia>
+            <ixx>3.333333333333334e-7</ixx>
+            <iyy>1.6708333333333336e-7</iyy>
+            <izz>1.6708333333333336e-7</izz>
+          </inertia>
+        </inertial>
+        <visual name="finger">
+          <pose>-.006 0 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>.035 .006 .013</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.65 0.71 0.76 1</ambient>
+            <diffuse>0.65 0.71 0.76 1</diffuse>
+            <specular>0.25 0.25 0.25 1</specular>
+          </material>
+        </visual>
+      </link>
+      <joint name="gripper_right" type="prismatic">
+        <parent>tool</parent>
+        <child>finger_right</child>
+        <axis>
+          <xyz>0 -1 0</xyz>
+          <limit>
+            <lower>0</lower>
+            <upper>.013</upper>
+            <effort>3</effort>
+          </limit>
+          <dynamics>
+            <damping>.1</damping>
+          </dynamics>
+        </axis>
+      </joint>
+      <plugin filename="gz-sim-joint-position-controller-system" name="gz::sim::systems::JointPositionController">
+        <joint_name>gripper_right</joint_name>
+        <topic>/arm/gripper/command</topic>
+        <use_velocity_commands>true</use_velocity_commands>
+        <cmd_max>.1</cmd_max>
+        <initial_position>.013</initial_position>
+      </plugin>
+      <plugin filename="gz-sim-joint-state-publisher-system" name="gz::sim::systems::JointStatePublisher">
+        <topic>/arm/measured_joints</topic>
+        <update_rate>100</update_rate>
+      </plugin>
+      <plugin filename="gz-sim-detachable-joint-system" name="gz::sim::systems::DetachableJoint">
+        <parent_link>tool</parent_link>
+        <child_model>payload</child_model>
+        <child_link>body</child_link>
+        <attach_topic>/arm/grasp/attach</attach_topic>
+        <detach_topic>/arm/grasp/detach</detach_topic>
+        <output_topic>/arm/grasp/state</output_topic>
+      </plugin>
+    </model>
+    <gui fullscreen="false">
+      <plugin filename="MinimalScene" name="3D View">
+        <gz-gui>
+          <title>Workcell</title>
+          <property type="bool" key="showTitleBar">false</property>
+          <property type="string" key="state">docked</property>
+        </gz-gui>
+        <engine>ogre2</engine>
+        <scene>scene</scene>
+        <ambient_light>.5 .5 .5</ambient_light>
+        <background_color>.10 .14 .20</background_color>
+        <camera_pose>1.0 -1.6 1.1 0 .42 2.1</camera_pose>
+      </plugin>
+      <plugin filename="GzSceneManager" name="Scene Manager"/>
+      <plugin filename="InteractiveViewControl" name="View control"/>
+      <plugin filename="WorldControl" name="World control"/>
+    </gui>
+  </world>
+</sdf>

@@ -11,6 +11,8 @@ from launch_ros.parameter_descriptions import ParameterValue
 def generate_launch_description():
     return LaunchDescription([
         DeclareLaunchArgument('gui', default_value='true'),
+        DeclareLaunchArgument('record_telemetry', default_value='false'),
+        DeclareLaunchArgument('telemetry_directory', default_value='artifacts/telemetry'),
         DeclareLaunchArgument('control_mode', default_value='position'),
         DeclareLaunchArgument('publish_rate_hz', default_value='50.0'),
         DeclareLaunchArgument('trajectory_duration', default_value='4.0'),
@@ -24,6 +26,11 @@ def generate_launch_description():
                 'publish_rate_hz': ParameterValue(LaunchConfiguration('publish_rate_hz'), value_type=float),
                 'trajectory_duration': ParameterValue(LaunchConfiguration('trajectory_duration'), value_type=float),
             }],
+        ),
+        Node(
+            package='planar_arm_control', executable='telemetry_recorder',
+            output='screen', condition=IfCondition(LaunchConfiguration('record_telemetry')),
+            parameters=[{'output_directory': LaunchConfiguration('telemetry_directory')}],
         ),
         Node(
             package="planar_arm_control",

@@ -14,3 +14,11 @@ geometry_msgs/Point object_position
 float64[3] tracking_error
 float64 timer_jitter_mean_ms
 float64 timer_jitter_max_ms
+string backend
+float64 gripper_opening
+float64 progress
+uint32 phase_index
+uint32 phase_count
+geometry_msgs/Point pick_target
+geometry_msgs/Point place_target
+float64 object_angle

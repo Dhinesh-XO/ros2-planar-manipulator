@@ -27,16 +27,18 @@ Reference acceleration limits alone do not guarantee physical acceleration or
 contact safety. Completion should depend on measured convergence, with explicit
 timeouts and fault handling, as our sequence already does.
 
-Geometry also has uncertainty. The current model treats links as zero-width lines
-and assumes exact dimensions and base placement. A physical installation needs
+Geometry also has uncertainty. The planner treats links as zero-width lines
+and assumes exact dimensions and base placement. The Gazebo backend adds finite
+meshes and simplified collision geometry, not a complete safety model. A physical installation needs
 clearance margins, finite link/gripper geometry and relevant collision checks.
 Ground avoidance in this planar simulation does not establish safe operation in a
 real workspace. Homing, controlled enable/disable and an independently effective
 emergency stop need defined procedures. The simulation reset must never be mapped
 to an instantaneous physical position change.
 
-Finally, grasping requires evidence. Our pick/place operation changes a simulated
-object state after a dwell. Real hardware needs gripper commands and appropriate
+Finally, grasping requires evidence. Our ideal backend changes object state after
+a dwell; Gazebo confirms a fixed attachment and release, not frictional grasping.
+Real hardware needs gripper commands and appropriate
 confirmation of grasp/release, with recovery for missed grasps or dropped objects.
 The GUI should distinguish reference, measured state, stale/disconnected state,
 projection and actuator faults, and must not present acceptance as completion.

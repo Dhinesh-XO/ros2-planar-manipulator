@@ -116,8 +116,23 @@ class Planner:
         if np.linalg.norm(np.asarray(self.arm.end_effector(current)) - resolved) < 1e-5:
             goal = current.copy()
         else:
-            goal = check_configuration(
-                self.arm, self.arm.inverse_kinematics(resolved, initial_guess=current))
+            # Reuse the PROVIDED numerical solver to retain redundancy and move
+            # all three joints. Its unconstrained output still requires checks.
+            candidates = [np.asarray(self.arm.jacobian_ik(resolved, current))]
+            candidates.append(np.asarray(self.arm.inverse_kinematics(resolved, initial_guess=current)))
+            valid = []
+            for candidate in candidates:
+                try:
+                    check_configuration(self.arm, candidate)
+                    if np.linalg.norm(np.asarray(self.arm.end_effector(candidate))-resolved) > 1e-4:
+                        continue
+                    certify_path(self.arm, current, candidate)
+                    valid.append(candidate)
+                except PlanningError:
+                    continue
+            if not valid:
+                raise PlanningError('No validated IK result and direct path for this target.')
+            goal = min(valid, key=lambda q: float(np.linalg.norm(q-current)))
         residual = np.linalg.norm(np.asarray(self.arm.end_effector(goal)) - resolved)
         if residual > 1e-4:
             raise PlanningError(f'IK did not reach target (residual {residual:.4f}).')
@@ -128,3 +143,20 @@ class Planner:
                        math.sqrt((10 / math.sqrt(3)) * distance / self.max_acceleration))
         return Trajectory(current, goal.copy(), duration, target.copy(),
                           resolved.copy(), projected)
+
+    def pick_place_route(self, current, pick, place, duration=4.0, clearance=0.7):
+        """Preflight every segment, including approach/lift/transfer/retreat."""
+        pick, place = np.asarray(pick, dtype=float), np.asarray(place, dtype=float)
+        approach_pick = pick + [0, clearance]
+        approach_place = place + [0, clearance]
+        transfer = np.array([(pick[0]+place[0])/2, max(pick[1], place[1])+1.5])
+        route = [('APPROACH_PICK', approach_pick), ('MOVING_TO_PICK', pick),
+                 ('LIFTING', approach_pick), ('TRANSFERRING', transfer),
+                 ('APPROACH_PLACE', approach_place), ('MOVING_TO_PLACE', place),
+                 ('RETREATING', approach_place)]
+        planned, q = [], np.asarray(current)
+        for phase, target in route:
+            trajectory = self.plan(q, target, duration, allow_projection=False)
+            planned.append((phase, trajectory))
+            q = trajectory.goal
+        return planned

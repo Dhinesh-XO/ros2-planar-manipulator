@@ -158,6 +158,12 @@ We preserve the file byte-for-byte. The adapter rejects invalid results and chec
 Cartesian residual. Already-reached targets retain their current configuration.
 We do not claim the adapter repairs the IK algorithm or explores all solutions.
 Joint 3 can remain flat in the prescribed demo because of the supplied solver.
+The enhanced adapter also tries the **provided** Jacobian solver, validates
+both candidates and chooses a nearby valid result. In the enhanced fixed
+scenario all three joints move; the supplied file itself is still unchanged.
+
+For the solid workcell, physical backend and repository reuse, continue with
+[enhancement notes](ENHANCEMENT_NOTES.md) and [repository review](REPOSITORY_REVIEW.md).
 
 ## 8. Interview rehearsal
 

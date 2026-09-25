@@ -12,6 +12,7 @@ from PyQt5 import QtCore, QtWidgets
 import pyqtgraph as pg
 import rclpy
 from geometry_msgs.msg import Point
+from nav_msgs.msg import Path
 from rcl_interfaces.srv import SetParameters
 from rclpy.executors import ExternalShutdownException, SingleThreadedExecutor
 from rclpy.node import Node
@@ -27,6 +28,7 @@ from planar_arm_interfaces.srv import MoveTo, PickPlace
 from .planar_arm import PlanarArm
 from .planning import JOINT_NAMES, LINK_LENGTHS
 from .recording import WindowRecorder
+from .workcell_view import WorkcellView
 
 COLORS = ['#58d9ed', '#ffbd69', '#bf9cff']
 
@@ -35,6 +37,7 @@ class Bridge(QtCore.QObject):
     joints = QtCore.pyqtSignal(object)
     reference = QtCore.pyqtSignal(object)
     status = QtCore.pyqtSignal(object)
+    path = QtCore.pyqtSignal(object)
     reply = QtCore.pyqtSignal(str, bool, str)
 
 
@@ -46,6 +49,7 @@ class GuiNode(Node):
         self.create_subscription(JointState, 'joint_commands', bridge.reference.emit, 10)
         qos = QoSProfile(depth=1, durability=DurabilityPolicy.TRANSIENT_LOCAL)
         self.create_subscription(ControllerStatus, 'controller_status', bridge.status.emit, qos)
+        self.create_subscription(Path, 'planned_path', bridge.path.emit, qos)
         self.move = self.create_client(MoveTo, 'move_to_target')
         self.sequence = self.create_client(PickPlace, 'pick_place')
         self.cancel = self.create_client(Trigger, 'cancel_motion')
@@ -82,7 +86,7 @@ class ArmWindow(QtWidgets.QMainWindow):
     def __init__(self, node, bridge):
         super().__init__()
         self.node, self.arm = node, PlanarArm(LINK_LENGTHS)
-        self.setWindowTitle('Kineshia | Planar arm control')
+        self.setWindowTitle('Kineshia | 3R planar workcell')
         self.resize(1280, 900)
         self.origin = time.monotonic()
         self.last_joint = self.last_status = 0.0
@@ -106,7 +110,7 @@ class ArmWindow(QtWidgets.QMainWindow):
         central = QtWidgets.QWidget()
         self.setCentralWidget(central)
         root = QtWidgets.QVBoxLayout(central)
-        title = QtWidgets.QLabel('KINESHIA  /  PLANAR ARM')
+        title = QtWidgets.QLabel('KINESHIA  /  3R WORKCELL')
         title.setStyleSheet('font-size:24px;font-weight:600;')
         root.addWidget(title)
         self.banner = QtWidgets.QLabel('Connecting to the controller…')
@@ -135,7 +139,27 @@ class ArmWindow(QtWidgets.QMainWindow):
                                                  symbolBrush=None, symbolPen='#ffbd69', name='Resolved')
         self.object_marker = self.arm_plot.plot(pen=None, symbol='s', symbolSize=15,
                                                symbolBrush='#8be0a4', name='Simulated object')
-        left.addWidget(self.arm_plot, 4)
+        self.views = QtWidgets.QTabWidget()
+        self.scene = WorkcellView()
+        scene_tab = QtWidgets.QWidget()
+        scene_layout = QtWidgets.QVBoxLayout(scene_tab)
+        scene_layout.setContentsMargins(0,0,0,0)
+        scene_layout.addWidget(self.scene, 1)
+        camera_bar = QtWidgets.QHBoxLayout()
+        camera_bar.addWidget(QtWidgets.QLabel('Drag: orbit  ·  Wheel: zoom  |  Cyan: planned  ·  Amber: actual'))
+        for label, callback in [('Front', self.scene.front_camera), ('Home', self.scene.home_camera)]:
+            button = QtWidgets.QPushButton(label)
+            button.clicked.connect(callback)
+            camera_bar.addWidget(button)
+        scene_layout.addLayout(camera_bar)
+        self.views.addTab(scene_tab, '3D workcell · planar motion')
+        self.views.addTab(self.arm_plot, '2D constraint view')
+        left.addWidget(self.views, 5)
+        self.progress = QtWidgets.QProgressBar()
+        self.progress.setRange(0, 100)
+        self.progress.setFormat('Waiting for controller')
+        self.progress.setMaximumHeight(20)
+        left.addWidget(self.progress)
         self.telemetry = QtWidgets.QLabel('Waiting for joint feedback')
         self.telemetry.setWordWrap(True)
         self.telemetry.setMinimumHeight(52)
@@ -143,17 +167,18 @@ class ArmWindow(QtWidgets.QMainWindow):
         self.angles = pg.PlotWidget(title='Joint angles · solid: feedback / dashed: command')
         self.angles.setLabel('left', 'Angle', units='deg')
         self.angles.setLabel('bottom', 'Time', units='s')
-        self.angles.addLegend()
+        self.angles.addLegend(offset=(10,5), colCount=3)
         self.angle_curves, self.reference_curves = [], []
         for i, color in enumerate(COLORS):
             self.angle_curves.append(self.angles.plot(pen=pg.mkPen(color, width=2), name=f'J{i+1}'))
             self.reference_curves.append(self.angles.plot(pen=pg.mkPen(color, style=QtCore.Qt.DashLine)))
-        left.addWidget(self.angles, 3)
+        left.addWidget(self.angles, 2)
         self.error_plot = pg.PlotWidget(title='Tracking error · command minus feedback')
         self.error_plot.setLabel('left', 'Error', units='deg')
         self.error_plot.setLabel('bottom', 'Time', units='s')
+        self.error_plot.getViewBox().setLimits(minYRange=0.2)
         self.error_curves = [self.error_plot.plot(pen=pg.mkPen(color, width=2)) for color in COLORS]
-        left.addWidget(self.error_plot, 2)
+        left.addWidget(self.error_plot, 1)
 
         panel = QtWidgets.QVBoxLayout()
         content.addLayout(panel, 1)
@@ -208,6 +233,7 @@ class ArmWindow(QtWidgets.QMainWindow):
         bridge.joints.connect(self.on_joints, QtCore.Qt.QueuedConnection)
         bridge.reference.connect(self.on_reference, QtCore.Qt.QueuedConnection)
         bridge.status.connect(self.on_status, QtCore.Qt.QueuedConnection)
+        bridge.path.connect(self.scene.set_path, QtCore.Qt.QueuedConnection)
         bridge.reply.connect(self.on_reply, QtCore.Qt.QueuedConnection)
         self.paint_timer = QtCore.QTimer(self)
         self.paint_timer.timeout.connect(self.refresh)
@@ -301,9 +327,13 @@ class ArmWindow(QtWidgets.QMainWindow):
             self.connection.setText('No fresh state received within 1 second.')
         else:
             s = self.status
+            self.mode.setEnabled(not busy and s.backend != 'gazebo')
+            self.reset_button.setEnabled(not busy and s.backend != 'gazebo')
+            self.progress.setValue(round(100*s.progress))
+            self.progress.setFormat(f'{s.backend.upper()}  |  {s.state.replace("_", " ")}  |  Phase {s.phase_index}/{s.phase_count}')
             self.banner.setText(f'{s.state}  ·  {s.detail}')
             self.banner.setStyleSheet('color:#ffbd69;' if s.projected else 'color:#e3ecf4;')
-            self.connection.setText(f'Connected · {s.control_mode}\n'
+            self.connection.setText(f'Connected · {s.backend} · {s.control_mode}\n'
                                     f'Timer jitter: mean {s.timer_jitter_mean_ms:.2f} ms'
                                     f' / max {s.timer_jitter_max_ms:.2f} ms')
             self.requested_marker.setData([s.requested_target.x], [s.requested_target.y])
@@ -312,6 +342,7 @@ class ArmWindow(QtWidgets.QMainWindow):
                                        [s.object_position.y] if s.object_visible else [])
         if self.q is not None:
             points = np.asarray(self.arm.forward_kinematics(self.q))
+            self.scene.update_arm(points, self.q, self.status)
             self.links.setData(points[:, 0], points[:, 1])
             degrees = np.degrees(self.q)
             self.telemetry.setText(
@@ -334,6 +365,7 @@ def main(args=None):
     cli = remove_ros_args(args=sys.argv if args is None else args)
     parser = argparse.ArgumentParser()
     parser.add_argument('--demo', action='store_true')
+    parser.add_argument('--gazebo-demo', action='store_true')
     parser.add_argument('--record')
     options = parser.parse_args(cli[1:])
     rclpy.init(args=args)
@@ -365,6 +397,9 @@ def main(args=None):
     if options.demo:
         from .demo import DemoDirector
         director = DemoDirector(window, app)
+    elif options.gazebo_demo:
+        from .demo import GazeboDemoDirector
+        director = GazeboDemoDirector(window, app)
     window.show()
     try:
         code = app.exec_()
