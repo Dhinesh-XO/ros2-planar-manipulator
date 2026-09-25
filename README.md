@@ -1,4 +1,4 @@
-# Kineshia Robotics — ROS 2 planar arm
+# ROS 2 Planar Manipulator
 
 A simulation-only 3-DoF arm with validated quintic motion, a completion-driven
 pick/place sequence and a live PyQt5/PyQtGraph operator GUI. Supports ideal
@@ -11,6 +11,8 @@ retreat phases, and a separate read-only telemetry recorder.
 [Assessment deliverables](submission/README.md) includes the one-page PDF notes,
 the primary 75-second demonstration, the optional Gazebo recording and selected
 passing test evidence. These files are tracked in Git and available after cloning.
+Prepared for the Kineshia Robotics simulation-only assessment. Repository:
+[Dhinesh-XO/ros2-planar-manipulator](https://github.com/Dhinesh-XO/ros2-planar-manipulator).
 The written answers are review drafts pending the candidate's own-words review.
 See [source provenance and evaluation-use notice](NOTICE.md) before publication.
 
@@ -26,6 +28,10 @@ Tested on Ubuntu 22.04, ROS 2 Humble and system Python 3.10. Do not use Conda
 Python 3.13 with the Humble binary installation.
 
 ```bash
+# Clone the private repository after the owner grants access:
+git clone git@github.com:Dhinesh-XO/ros2-planar-manipulator.git
+cd ros2-planar-manipulator
+
 # ROS 2 Humble must already be installed and sourced.
 # Install missing OS dependencies if needed:
 sudo apt install python3-venv python3-pyqt5 python3-numpy python3-pytest \

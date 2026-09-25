@@ -130,4 +130,5 @@ No additional major feature is needed for the defined brief. Review the short
 answers in your own words, practise the explanation, confirm the deadline/channel,
 and choose the final files to submit. Follow `SUBMISSION_CHECKLIST.md`. Neither
 the ownership review nor the mock interview is marked complete on your behalf.
-No submission email or repository publication has been performed.
+The audit itself did not email the assessment or publish a repository. See the
+current project README for the subsequent private GitHub handover.

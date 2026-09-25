@@ -53,5 +53,8 @@ The brief specifies Monday 28 September 2026 at 10:00 AM, but does not name the
 timezone. It also says five days from receipt and allows extension requests for
 employed candidates. Resolve the actual deadline from your correspondence.
 
-No repository has been published and no submission email has been sent. The
-remaining human step is understanding/review, not an unimplemented core feature.
+The private GitHub handover is
+[Dhinesh-XO/ros2-planar-manipulator](https://github.com/Dhinesh-XO/ros2-planar-manipulator).
+The evaluator needs repository access before a private link can be reviewed.
+No submission email has been sent. The remaining human step is understanding
+and written-answer review, not an unimplemented core feature.
